@@ -54,8 +54,69 @@ const questions = [
 /*************************/
 /* Contenu du DOM chargé */
 /*************************/
+let nombre = 0;
+let res;
+
+
 document.addEventListener("DOMContentLoaded", () => {
-  
-// démarrage du quizz
+
+questionAleatoire()
   
 });
+  function questionAleatoire(){
+    const listeQuestion = questions[nombre];
+    if(nombre<=3){
+      listeQuestion.answers.forEach((answer) => {
+        
+          let response = (`${answer}`);
+          console.log(response);
+          const ul=document.getElementById("answers")
+          
+          res = document.createElement('li');
+          res.className="answer";
+          res.innerHTML=answer;
+          ul.appendChild(res);        
+      });
+        document.getElementById('question').innerText=listeQuestion.question;
+        choixReponse(listeQuestion,res);
+        nombre++;
+    }else{
+     document.getElementById('question').innerText=`Terminé votre score est de ${score.innerHTML}`;
+    }
+  }
+
+  function choixReponse(listeQuestion,res) {
+    const listeResponse = document.querySelectorAll(".answer");
+
+    listeResponse.forEach((element,index) => {
+      element.addEventListener("click", () => {
+
+        console.log("click");
+        console.log(index);
+        if (listeQuestion.correctAnswerIndex ===index) {
+          console.log("bravo");
+          listeResponse.forEach((element)=>{
+            element.remove();
+          })
+          calculPoint(); 
+        }else{
+          questionAleatoire();
+          listeResponse.forEach((element)=>{
+            element.remove();
+          })
+        }
+
+      });
+    });
+  }
+
+function calculPoint(){
+  
+  let score = document.getElementById('score');
+  console.log(score.innerHTML);
+
+  let point=score.innerHTML;
+  point++;
+  score.innerHTML=point;
+  questionAleatoire();
+}
